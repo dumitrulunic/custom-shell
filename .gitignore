@@ -1,0 +1,25 @@
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Executables
+imcsh
+*.exe
+*.out
+
+# Debug files
+*.dSYM/
+
+# VSCode settings
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Build directory
+build/
