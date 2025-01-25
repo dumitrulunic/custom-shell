@@ -1,6 +1,7 @@
 #include "shell.h"
 #include "parser.h"
 #include "executor.h"
+#include <signal.h>
 
 static int shell_status = SHELL_RUNNING;
 static pid_t background_processes[100];  // Store background process PIDs
