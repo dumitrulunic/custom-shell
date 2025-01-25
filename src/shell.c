@@ -2,10 +2,41 @@
 #include "parser.h"
 #include "executor.h"
 #include <signal.h>
+#include <sys/wait.h>
+#include <stdio.h>
+#include <unistd.h>
 
 static int shell_status = SHELL_RUNNING;
 static pid_t background_processes[100];  // Store background process PIDs
 static int process_count = 0;
+
+// Function to remove a process from the list of running processes
+void remove_process(pid_t pid) {
+    for (int i = 0; i < process_count; i++) {
+        if (background_processes[i] == pid) {
+            // Shift remaining processes
+            for (int j = i; j < process_count - 1; j++) {
+                background_processes[j] = background_processes[j + 1];
+            }
+            process_count--;
+            break;
+        }
+    }
+}
+
+// Signal handler for SIGCHLD
+void sigchld_handler(int sig) {
+    (void)sig; // Mark the parameter as unused to suppress the warning
+    int status;
+    pid_t pid;
+
+    while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
+        printf("\n[Process completed] PID: %d\n", pid);
+        remove_process(pid); // Remove the completed process from the list
+        print_prompt(); // Print the prompt again
+        fflush(stdout);
+    }
+}
 
 void print_prompt() {
     char hostname[1024];
@@ -66,21 +97,25 @@ void handle_quit() {
 
 void shell_loop() {
     char input[MAX_INPUT_SIZE];
-    
+
+    // Register the SIGCHLD handler
+    struct sigaction sa;
+    sa.sa_handler = sigchld_handler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESTART;
+    sigaction(SIGCHLD, &sa, NULL);
+
     while (shell_status == SHELL_RUNNING) {
         print_prompt();
-        
-        // Check if any background processes have completed
-        check_background_processes();
-        
+
         // Read input
         if (fgets(input, MAX_INPUT_SIZE, stdin) == NULL) {
             break;
         }
-        
+
         // Remove trailing newline
         input[strcspn(input, "\n")] = 0;
-        
+
         // Process the command
         if (strlen(input) > 0) {
             process_command(input);
