@@ -16,4 +16,4 @@ int process_command(char *command);
 int execute_command(Command *cmd);
 void execute_builtin_command(Command *cmd);
 
-#endif // EXECUTOR_H
+#endif

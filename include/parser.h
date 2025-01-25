@@ -6,14 +6,15 @@
 #include <string.h>
 #include "shell.h"
 
+// dict of commands
 typedef struct {
-    char **args;         // Array of command arguments
-    char *output_file;   // Output redirection file (if any)
-    int background;      // Background execution flag
-    int arg_count;       // Number of arguments
+    char **args;         // array of command args
+    char *output_file;   // output redirection file
+    int background;      // background exec  flag
+    int arg_count;       // number of args
 } Command;
 
 Command* parse_command(char *input);
 void free_command(Command *cmd);
 
-#endif // PARSER_H
+#endif

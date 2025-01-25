@@ -12,17 +12,19 @@
 
 #define MAX_INPUT_SIZE 1024
 #define MAX_ARG_SIZE 64
+
+//! version of shell
 #define SHELL_VERSION "1.1"
 
-// Shell status codes
+// status codes
 #define SHELL_RUNNING 1
 #define SHELL_EXIT 0
 
-// Function declarations
+// functions
 void shell_loop(void);
 void print_prompt(void);
 int process_command(char *command);
 void handle_quit(void);
 void handle_background_process(pid_t pid);
 
-#endif // SHELL_H
+#endif

@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-I./include -Wall -Wextra
-SRCDIR=src
+SRCDIR=exec
 SOURCES=$(wildcard $(SRCDIR)/*.c)
 OBJECTS=$(SOURCES:.c=.o)
 TARGET=imcsh
