@@ -23,3 +23,6 @@ imcsh
 
 # Build directory
 build/
+
+# Text files
+*.txt
