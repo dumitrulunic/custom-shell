@@ -103,11 +103,11 @@ void shell_loop() {
     char input[MAX_INPUT_SIZE];
 
     // register the  handler to track background processes
-    struct sigaction sa;
-    sa.sa_handler = sigchld_handler;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = SA_RESTART;
-    sigaction(SIGCHLD, &sa, NULL);
+    struct sigaction make;
+    make.sa_handler = sigchld_handler;
+    sigemptyset(&make.sa_mask);
+    make.sa_flags = SA_RESTART;
+    sigaction(SIGCHLD, &make, NULL);
 
     while (shell_status == SHELL_RUNNING) {
         print_prompt();
